@@ -1,0 +1,42 @@
+{
+  "brand": { "name": "ستيلا كيز", "tagline": "إعلانات ستيلا موثوقة — بيع أو إيجار أو اعرض وحدتك." },
+  "nav": { "buy": "شراء", "rent": "إيجار", "listYourUnit": "اعرض وحدتك", "projects": "المشاريع", "about": "من نحن", "contact": "تواصل", "admin": "الإدارة" },
+  "cta": { "buy": "شراء", "rent": "إيجار", "listYourUnit": "اعرض وحدتك", "whatsapp": "واتساب", "call": "اتصال", "viewProject": "شوف المشروع", "viewListing": "شوف الإعلان", "reset": "مسح", "apply": "تطبيق", "next": "التالي", "back": "السابق", "submit": "إرسال" },
+  "home": {
+    "heroTitle": "وجهتك الموثوقة لوحدات ستيلا",
+    "heroSub": "إعلانات موثقة من المُلاك ومن مخزون ستيلا. تواصل مباشر على واتساب، بدون إعلانات وهمية.",
+    "projectsTitle": "استكشف الخمس منتجعات",
+    "unitsAvailable": "{count, plural, zero {لا توجد وحدات} one {وحدة واحدة متاحة} two {وحدتان متاحتان} few {# وحدات متاحة} many {# وحدة متاحة} other {# وحدة}}",
+    "trustTitle": "كل إعلان يتم التحقق منه يدويًا",
+    "trustBody": "فريقنا يراجع كل طلب ويتحقق منه خلال 24–48 ساعة قبل نشره."
+  },
+  "buy": { "title": "شاليهات وفلل للبيع", "results": "{count} نتيجة", "empty": "لا توجد وحدات مطابقة — جرّب فلاتر أوسع." },
+  "rent": { "title": "شاليهات وفلل للإيجار", "results": "{count} نتيجة", "empty": "لا توجد وحدات مطابقة — جرّب فلاتر أوسع." },
+  "filters": {
+    "project": "المشروع", "location": "الموقع", "price": "السعر (ج.م)", "min": "من", "max": "إلى",
+    "bedrooms": "غرف النوم", "bathrooms": "الحمامات", "area": "المساحة (م²)", "propertyType": "نوع الوحدة",
+    "deliveryStatus": "حالة التسليم", "finishing": "التشطيب", "saleKind": "نوع البيع", "payment": "طريقة الدفع",
+    "view": "الإطلالة", "beachDistance": "المسافة من البحر", "amenities": "المرافق", "rentalPeriod": "مدة الإيجار",
+    "furnished": "مفروش", "maxGuests": "الحد الأقصى للأفراد",
+    "propertyTypes": { "chalet": "شاليه", "villa": "فيلا", "townhouse": "تاون هاوس", "twin_house": "توين هاوس", "penthouse": "بنتهاوس", "duplex": "دوبلكس", "apartment": "شقة", "studio": "استوديو" },
+    "areas": { "north_coast": "الساحل الشمالي", "ain_sokhna": "العين السخنة" },
+    "rentalPeriods": { "daily": "يومي", "weekly": "أسبوعي", "monthly": "شهري", "seasonal": "موسمي", "annual": "سنوي" }
+  },
+  "listing": {
+    "bedrooms": "{n} غرفة", "bathrooms": "{n} حمام", "area": "{n} م²", "floor": "الدور {n}",
+    "verified": "موثوق", "pricePerSqm": "{price} / م²", "reference": "رقم مرجعي #{ref}",
+    "sections": { "details": "التفاصيل", "description": "الوصف", "amenities": "المرافق", "location": "الموقع", "similar": "إعلانات مشابهة في نفس المشروع", "verification": "تم النشر والتحقق بواسطة ستيلا كيز" },
+    "waPrefill": "السلام عليكم ستيلا كيز، أنا مهتم بالإعلان #{ref} — {url}"
+  },
+  "list": {
+    "title": "اعرض وحدتك",
+    "sub": "بيع أو تأجير وحدتك في ستيلا. فريقنا يتحقق ويعرض الإعلان خلال 24–48 ساعة.",
+    "steps": { "intent": "الهدف", "unit": "بيانات الوحدة", "commercials": "السعر", "photos": "الصور", "contact": "بيانات التواصل", "confirm": "تأكيد" },
+    "success": "تم! فريقنا هيتواصل معاك على واتساب خلال 24–48 ساعة للتحقق والنشر.",
+    "intent": { "sell": "عايز أبيع", "rent": "عايز أأجّر", "pickProject": "اختر المشروع" },
+    "photos": { "hint": "أضف 3 إلى 15 صورة. أول صورة هي صورة الغلاف." },
+    "contact": { "name": "الاسم بالكامل", "phone": "رقم الواتساب", "email": "الإيميل (اختياري)", "otpSent": "بعتنا لك كود من 6 أرقام على الواتساب", "otp": "كود التحقق" }
+  },
+  "admin": { "queue": "قائمة المراجعة", "listings": "الإعلانات", "leads": "العملاء", "reports": "البلاغات", "projects": "المشاريع", "signIn": "دخول الإدارة" },
+  "common": { "loading": "جاري التحميل…", "or": "أو", "arabic": "العربية", "english": "English" }
+}
