@@ -1,7 +1,8 @@
 {
   "brand": { "name": "Stella Keys", "tagline": "Verified Stella-resort listings — buy, rent, or list your unit." },
   "nav": { "buy": "Buy", "rent": "Rent", "listYourUnit": "List your unit", "projects": "Projects", "about": "About", "contact": "Contact", "admin": "Admin" },
-  "cta": { "buy": "Buy", "rent": "Rent", "listYourUnit": "List your unit", "whatsapp": "WhatsApp", "call": "Call", "viewProject": "View project", "viewListing": "View listing", "reset": "Reset", "apply": "Apply", "next": "Next", "back": "Back", "submit": "Submit" },
+  "cta": { "buy": "Buy", "rent": "Rent", "listYourUnit": "List your unit", "contact": "Contact us", "call": "Call", "viewProject": "View project", "viewListing": "View listing", "reset": "Reset", "apply": "Apply", "next": "Next", "back": "Back", "submit": "Submit", "close": "Close" },
+  "inquiry": { "title": "Send an inquiry", "name": "Full name", "phone": "Phone", "message": "Message (optional)", "success": "Thanks — we'll get back to you shortly." },
   "home": {
     "heroTitle": "The trusted home for Stella-resort units",
     "heroSub": "Verified listings from owners and Stella inventory. WhatsApp-first, no fake ads.",
@@ -25,17 +26,16 @@
   "listing": {
     "bedrooms": "{n} bed", "bathrooms": "{n} bath", "area": "{n} sqm", "floor": "Floor {n}",
     "verified": "Verified", "pricePerSqm": "{price} / sqm", "reference": "Ref #{ref}",
-    "sections": { "details": "Details", "description": "Description", "amenities": "Amenities", "location": "Location", "similar": "Similar listings in this project", "verification": "Listed & verified by Stella Keys" },
-    "waPrefill": "Hi Stella Keys, I'm interested in listing #{ref} — {url}"
+    "sections": { "details": "Details", "description": "Description", "amenities": "Amenities", "location": "Location", "similar": "Similar listings in this project", "verification": "Listed & verified by Stella Keys" }
   },
   "list": {
     "title": "List your unit",
     "sub": "Sell or rent your Stella unit. Our team verifies and publishes within 24–48h.",
     "steps": { "intent": "Intent", "unit": "Unit basics", "commercials": "Commercials", "photos": "Photos", "contact": "Contact", "confirm": "Confirm" },
-    "success": "Thanks! Our team will contact you on WhatsApp within 24–48h to verify and publish.",
+    "success": "Thanks! Our team will contact you within 24–48h to verify and publish.",
     "intent": { "sell": "I want to sell", "rent": "I want to rent out", "pickProject": "Pick your project" },
     "photos": { "hint": "Add 3–15 photos. First one is the cover." },
-    "contact": { "name": "Full name", "phone": "WhatsApp number", "email": "Email (optional)", "otpSent": "We just sent a 6-digit code to your WhatsApp", "otp": "Verification code" }
+    "contact": { "name": "Full name", "phone": "Phone number", "email": "Email (optional)" }
   },
   "admin": { "queue": "Approval queue", "listings": "Listings", "leads": "Leads", "reports": "Reports", "projects": "Projects", "signIn": "Admin sign-in" },
   "common": { "loading": "Loading…", "or": "or", "arabic": "العربية", "english": "English" }

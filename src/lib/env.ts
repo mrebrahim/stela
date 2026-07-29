@@ -3,7 +3,6 @@ export const env = {
   SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY ?? '',
   SITE_URL: process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000',
-  WA_NUMBER: process.env.STELLA_KEYS_WHATSAPP_NUMBER ?? '201000000000',
   GA4_ID: process.env.NEXT_PUBLIC_GA4_ID ?? '',
   PIXEL_ID: process.env.NEXT_PUBLIC_META_PIXEL_ID ?? ''
 };

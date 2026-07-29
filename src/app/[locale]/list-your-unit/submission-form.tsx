@@ -202,9 +202,6 @@ export function SubmissionForm({ locale, projects }: { locale: Locale; projects:
             <Field label={t('list.contact.email')}>
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full border rounded-md px-3 py-2" />
             </Field>
-            <p className="text-xs text-slate-500">
-              WhatsApp OTP verification via Evolution API — plug the code into <code>/api/otp</code> when the instance is ready.
-            </p>
           </div>
         )}
 

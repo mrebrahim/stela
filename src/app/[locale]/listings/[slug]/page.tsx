@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { createClient } from '@/lib/supabase/server';
-import { WhatsappCta } from '@/components/whatsapp-cta';
+import { InquiryForm } from '@/components/inquiry-form';
 import { formatPrice } from '@/lib/format';
 import { env } from '@/lib/env';
 import type { Locale } from '@/i18n/config';
@@ -124,13 +124,11 @@ export default async function ListingDetailPage({
               <span className="text-sm text-slate-500 ms-1">/ {t(`filters.rentalPeriods.${listing.rental_period}`)}</span>
             )}
           </div>
-          <WhatsappCta reference={listing.reference} url={url} className="w-full" />
-          <a
-            href={`tel:+${env.WA_NUMBER}`}
-            className="w-full inline-flex items-center justify-center gap-2 border rounded-lg px-4 py-2 hover:bg-slate-50"
-          >
-            📞 {t('cta.call')}
-          </a>
+          <InquiryForm
+            listingId={listing.id}
+            reference={listing.reference}
+            projectId={listing.project.id}
+          />
         </aside>
       </div>
     </>
