@@ -20,7 +20,7 @@ export function LocaleSwitcher({ tone }: { tone: 'solid' | 'ghost' }) {
   }, []);
 
   function hrefFor(target: Locale) {
-    return pathname.replace(/^\/(ar|en|ru)/, `/${target}`) || `/${target}`;
+    return pathname.replace(/^\/(ar|en|ru|zh)/, `/${target}`) || `/${target}`;
   }
 
   const btn =
