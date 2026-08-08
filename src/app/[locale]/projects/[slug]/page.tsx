@@ -10,12 +10,10 @@ import type { ListingWithProject, Project } from '@/lib/types';
 export const revalidate = 300;
 
 export async function generateStaticParams() {
+  const { locales } = await import('@/i18n/config');
   const supabase = createPublicClient();
   const { data } = await supabase.from('projects').select('slug').eq('is_active', true);
-  return (data ?? []).flatMap((p) => [
-    { locale: 'ar', slug: p.slug },
-    { locale: 'en', slug: p.slug }
-  ]);
+  return (data ?? []).flatMap((p) => locales.map((locale) => ({ locale, slug: p.slug })));
 }
 
 export default async function ProjectHubPage({

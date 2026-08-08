@@ -4,6 +4,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import type { Locale } from '@/i18n/config';
+import { LocaleSwitcher } from './locale-switcher';
 
 export function SiteHeader() {
   const locale = useLocale() as Locale;
@@ -21,8 +22,6 @@ export function SiteHeader() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const otherLocale: Locale = locale === 'ar' ? 'en' : 'ar';
-  const otherHref = pathname.replace(/^\/(ar|en)/, `/${otherLocale}`) || `/${otherLocale}`;
   const link = (href: string) => `/${locale}${href}`;
 
   const solid = scrolled || !transparentOverHero;
@@ -56,17 +55,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="ms-auto flex items-center gap-2">
-          <Link
-            href={otherHref}
-            className={
-              'rounded-full text-sm px-3 py-1.5 border transition ' +
-              (solid
-                ? 'border-slate-300 text-slate-700 hover:bg-slate-100'
-                : 'border-white/40 text-white hover:bg-white/10')
-            }
-          >
-            {otherLocale === 'ar' ? t('common.arabic') : t('common.english')}
-          </Link>
+          <LocaleSwitcher tone={solid ? 'solid' : 'ghost'} />
           <Link
             href={link('/list-your-unit')}
             className="hidden sm:inline-flex bg-sand-500 hover:bg-sand-600 text-white rounded-full text-sm px-4 py-1.5 font-semibold transition"
