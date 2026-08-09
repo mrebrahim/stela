@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/server';
 import { InquiryForm } from '@/components/inquiry-form';
 import { formatPrice } from '@/lib/format';
 import { env } from '@/lib/env';
+import { youtubeIdFrom, youtubeEmbedUrl } from '@/lib/youtube';
 import type { Locale } from '@/i18n/config';
 import type { ListingWithProject } from '@/lib/types';
 
@@ -26,7 +27,8 @@ export default async function ListingDetailPage({
     .single();
 
   if (!data) notFound();
-  const listing = data as unknown as ListingWithProject;
+  const listing = data as unknown as ListingWithProject & { video_url: string | null };
+  const ytId = youtubeIdFrom(listing.video_url);
 
   const projectName = locale === 'ar' ? listing.project.name_ar : listing.project.name_en;
   const title = (locale === 'ar' ? listing.title_ar : listing.title_en) ?? `${listing.property_type} — ${projectName}`;
@@ -93,6 +95,22 @@ export default async function ListingDetailPage({
             {listing.floor != null && <span>🏢 {t('listing.floor', { n: listing.floor })}</span>}
             {listing.view_kind && <span>🌊 {listing.view_kind}</span>}
           </div>
+
+          {ytId && (
+            <section>
+              <h2 className="text-lg font-semibold mb-2">Video</h2>
+              <div className="relative aspect-video rounded-xl overflow-hidden bg-black">
+                <iframe
+                  src={youtubeEmbedUrl(ytId)}
+                  title="Property video"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full"
+                />
+              </div>
+            </section>
+          )}
 
           {desc && (
             <section>

@@ -47,6 +47,42 @@ Every push to `main` deploys to production; every PR gets a preview URL.
 The Supabase project `stela` (ref `pxbzovfabgpxddlibwhi`, region `eu-north-1`) has schema, RLS,
 storage buckets and seed data applied. See `supabase/migrations/` for the source-of-truth SQL.
 
+## Admin panel
+
+Sign in at `/[locale]/admin/login`. On first setup:
+
+1. **Create the auth user** — Supabase Dashboard → Authentication → Users → **Add user** (with email + password, "Auto-confirm user").
+2. **Grant admin role** — SQL editor:
+   ```sql
+   insert into admin_users (auth_user_id, full_name, role, is_active)
+   select id, 'Your Name', 'admin', true from auth.users where email = 'you@example.com';
+   ```
+3. Visit `/ar/admin/login`, sign in with the email/password. You land on the dashboard.
+
+**Admin can:**
+- Create new listings with full details (title/description in AR + EN, price, beds, view, amenities, etc.)
+- Upload photos — files stream to `/data/uploads` on the server (see volume below), NOT to Supabase Storage
+- Paste a **YouTube URL** — the LDP renders it as an embedded player
+- Set status directly to `published` or save as `draft`
+- Mark listings as featured for the home page
+- Approve / reject / archive / delete existing listings
+- View incoming inquiries in the **Leads** page
+
+## File storage on Coolify (persistent volume)
+
+Uploaded photos are stored on the server (`/data/uploads`). To keep them across redeploys,
+add a persistent volume in Coolify:
+
+- Coolify → your Application → **Storages** → **Add**
+- Type: **Volume**
+- Source path (host): choose or accept the auto-generated path
+- Destination path (container): `/data`
+- Save, then Redeploy
+
+After redeploy, files uploaded via the admin panel land in the mounted volume and survive
+container restarts. They're served publicly through `GET /api/media/<filename>` with a
+1-year immutable cache header.
+
 ## Contact / lead capture (current)
 
 WhatsApp is deferred. The Listing Detail Page shows a **Contact us** button that opens an in-app

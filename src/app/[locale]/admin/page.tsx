@@ -1,78 +1,59 @@
 import Link from 'next/link';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { createClient } from '@/lib/supabase/server';
+import { redirect } from 'next/navigation';
+import { setRequestLocale } from 'next-intl/server';
+import { createAdminClient } from '@/lib/supabase/admin';
+import { getAdmin } from '@/lib/auth';
 import type { Locale } from '@/i18n/config';
 
 export const dynamic = 'force-dynamic';
-export const revalidate = 0;
 
-export default async function AdminHome({
+export default async function AdminDashboard({
   params
 }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations();
-  const supabase = await createClient();
+  const admin = await getAdmin();
+  if (!admin) redirect(`/${locale}/admin/login`);
 
-  // Read pending queue — RLS allows only admin users.
-  const { data: pending, error } = await supabase
-    .from('listings')
-    .select('id, reference, slug, listing_type, property_type, bedrooms, price, created_at, project:projects(name_en, name_ar)')
-    .eq('status', 'pending')
-    .order('created_at', { ascending: false })
-    .limit(50);
+  const db = createAdminClient();
+  const [pending, published, leads] = await Promise.all([
+    db.from('listings').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
+    db.from('listings').select('id', { count: 'exact', head: true }).eq('status', 'published'),
+    db.from('leads').select('id', { count: 'exact', head: true }).eq('status', 'new')
+  ]);
+
+  const stats = [
+    { label: 'Pending review',    value: pending.count ?? 0,   href: `/${locale}/admin/listings?status=pending`,   color: 'bg-amber-100 text-amber-800' },
+    { label: 'Published',         value: published.count ?? 0, href: `/${locale}/admin/listings?status=published`, color: 'bg-emerald-100 text-emerald-800' },
+    { label: 'New leads',         value: leads.count ?? 0,     href: `/${locale}/admin/leads`,                     color: 'bg-stella-100 text-stella-800' }
+  ];
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold">{t('admin.queue')}</h1>
-      <p className="text-sm text-slate-500 mt-1">
-        Sign in as a user in <code>admin_users</code> to see pending listings.
-      </p>
+    <div className="p-6 md:p-8 space-y-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
+        <Link href={`/${locale}/admin/listings/new`} className="rounded-md bg-stella-700 text-white px-4 py-2 text-sm font-semibold hover:bg-stella-800">
+          + New listing
+        </Link>
+      </div>
 
-      <div className="mt-6 rounded-xl border overflow-hidden bg-white">
-        <table className="w-full text-sm">
-          <thead className="bg-slate-50 text-start">
-            <tr>
-              <Th>Ref</Th>
-              <Th>Type</Th>
-              <Th>Project</Th>
-              <Th>Beds</Th>
-              <Th>Price</Th>
-              <Th>Submitted</Th>
-              <Th />
-            </tr>
-          </thead>
-          <tbody>
-            {error && (
-              <tr><td colSpan={7} className="p-4 text-red-700">{error.message}</td></tr>
-            )}
-            {(pending ?? []).length === 0 && !error && (
-              <tr><td colSpan={7} className="p-6 text-center text-slate-500">No pending submissions.</td></tr>
-            )}
-            {(pending ?? []).map((l) => {
-              const proj = (l.project as unknown as { name_en: string; name_ar: string } | null);
-              return (
-                <tr key={l.id} className="border-t">
-                  <Td>{l.reference}</Td>
-                  <Td>{l.listing_type}</Td>
-                  <Td>{proj ? (locale === 'ar' ? proj.name_ar : proj.name_en) : ''}</Td>
-                  <Td>{l.bedrooms}</Td>
-                  <Td>{l.price}</Td>
-                  <Td>{new Date(l.created_at).toLocaleDateString()}</Td>
-                  <Td><Link href={`/${locale}/listings/${l.slug}`} className="text-stella-700">preview</Link></Td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {stats.map((s) => (
+          <Link key={s.label} href={s.href} className="rounded-xl border bg-white p-5 shadow-card hover:shadow-card-hover transition">
+            <div className={'inline-block text-xs font-medium rounded-full px-2 py-0.5 ' + s.color}>{s.label}</div>
+            <div className="mt-3 text-3xl font-extrabold text-slate-900">{s.value}</div>
+          </Link>
+        ))}
+      </div>
+
+      <div className="rounded-xl border bg-white p-5">
+        <div className="font-semibold mb-2">Quick actions</div>
+        <div className="flex flex-wrap gap-2 text-sm">
+          <Link href={`/${locale}/admin/listings/new`} className="rounded-md border px-3 py-1.5 hover:bg-slate-50">Create listing</Link>
+          <Link href={`/${locale}/admin/listings?status=pending`} className="rounded-md border px-3 py-1.5 hover:bg-slate-50">Review pending</Link>
+          <Link href={`/${locale}/admin/leads`} className="rounded-md border px-3 py-1.5 hover:bg-slate-50">See leads</Link>
+        </div>
       </div>
     </div>
   );
-}
-
-function Th({ children }: { children?: React.ReactNode }) {
-  return <th className="text-start px-3 py-2 font-medium text-slate-500">{children}</th>;
-}
-function Td({ children }: { children?: React.ReactNode }) {
-  return <td className="px-3 py-2">{children}</td>;
 }

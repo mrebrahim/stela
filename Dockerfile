@@ -15,7 +15,7 @@ RUN corepack enable
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# These NEXT_PUBLIC_* vars are inlined into the client bundle at build time.
+# NEXT_PUBLIC_* vars are inlined into the client bundle at build time.
 # Pass them as --build-arg in Coolify (Application → Build → Build Arguments).
 ARG NEXT_PUBLIC_SUPABASE_URL
 ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -34,9 +34,14 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
+# Uploaded property photos live here. Mount a Coolify persistent volume
+# to /data so they survive redeploys.
+ENV UPLOADS_DIR=/data/uploads
 
 RUN addgroup --system --gid 1001 nodejs \
- && adduser --system --uid 1001 nextjs
+ && adduser --system --uid 1001 nextjs \
+ && mkdir -p /data/uploads \
+ && chown -R nextjs:nodejs /data
 
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
@@ -44,4 +49,5 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
 EXPOSE 3000
+VOLUME ["/data"]
 CMD ["node", "server.js"]
