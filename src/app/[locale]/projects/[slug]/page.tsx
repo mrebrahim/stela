@@ -33,6 +33,7 @@ export default async function ProjectHubPage({
     .select('*, project:projects(id, slug, name_en, name_ar, area), photos:listing_photos(public_url, storage_path, is_primary)')
     .eq('status', 'published')
     .eq('project_id', p.id)
+    .contains('locales', [locale])
     .order('featured', { ascending: false })
     .limit(12);
 

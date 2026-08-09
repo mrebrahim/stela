@@ -71,8 +71,14 @@ export interface Listing {
   available_to: string | null;
   title_en: string | null;
   title_ar: string | null;
+  title_ru: string | null;
+  title_zh: string | null;
   description_en: string | null;
   description_ar: string | null;
+  description_ru: string | null;
+  description_zh: string | null;
+  locales: string[];
+  video_url: string | null;
   amenities: string[];
   published_at: string | null;
   created_at: string;

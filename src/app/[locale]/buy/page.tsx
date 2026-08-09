@@ -31,7 +31,8 @@ export default async function BuyPage({
     .from('listings')
     .select('*, project:projects(id, slug, name_en, name_ar, area), photos:listing_photos(public_url, storage_path, is_primary)')
     .eq('status', 'published')
-    .eq('listing_type', 'sale');
+    .eq('listing_type', 'sale')
+    .contains('locales', [locale]);
 
   if (sp.project) {
     const proj = (projects ?? []).find((p) => p.slug === sp.project);

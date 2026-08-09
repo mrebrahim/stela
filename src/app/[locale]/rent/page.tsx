@@ -31,7 +31,8 @@ export default async function RentPage({
     .from('listings')
     .select('*, project:projects(id, slug, name_en, name_ar, area), photos:listing_photos(public_url, storage_path, is_primary)')
     .eq('status', 'published')
-    .eq('listing_type', 'rent');
+    .eq('listing_type', 'rent')
+    .contains('locales', [locale]);
 
   if (sp.project) {
     const { data: match } = await supabase.from('projects').select('id').eq('slug', sp.project).single();

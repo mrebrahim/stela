@@ -6,6 +6,7 @@ import { InquiryForm } from '@/components/inquiry-form';
 import { formatPrice } from '@/lib/format';
 import { env } from '@/lib/env';
 import { youtubeIdFrom, youtubeEmbedUrl } from '@/lib/youtube';
+import { localizedTitle, localizedDescription } from '@/lib/localized';
 import type { Locale } from '@/i18n/config';
 import type { ListingWithProject } from '@/lib/types';
 
@@ -27,12 +28,12 @@ export default async function ListingDetailPage({
     .single();
 
   if (!data) notFound();
-  const listing = data as unknown as ListingWithProject & { video_url: string | null };
+  const listing = data as unknown as ListingWithProject;
   const ytId = youtubeIdFrom(listing.video_url);
 
   const projectName = locale === 'ar' ? listing.project.name_ar : listing.project.name_en;
-  const title = (locale === 'ar' ? listing.title_ar : listing.title_en) ?? `${listing.property_type} — ${projectName}`;
-  const desc = locale === 'ar' ? listing.description_ar : listing.description_en;
+  const title = localizedTitle(listing, locale) ?? `${listing.property_type} — ${projectName}`;
+  const desc = localizedDescription(listing, locale);
   const url = `${env.SITE_URL}/${locale}/listings/${listing.slug}`;
 
   const jsonLd = listing.listing_type === 'sale'

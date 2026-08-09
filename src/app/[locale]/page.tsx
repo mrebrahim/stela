@@ -34,6 +34,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
     .from('listings')
     .select('project_id')
     .eq('status', 'published')
+    .contains('locales', [locale])
     .in('project_id', ids.length ? ids : ['00000000-0000-0000-0000-000000000000']);
   const countByProject = new Map<string, number>();
   (countsRaw ?? []).forEach((row: { project_id: string }) => {
@@ -44,6 +45,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: L
     .from('listings')
     .select('*, project:projects(id, slug, name_en, name_ar, area), photos:listing_photos(public_url, storage_path, is_primary)')
     .eq('status', 'published')
+    .contains('locales', [locale])
     .order('featured', { ascending: false })
     .order('created_at', { ascending: false })
     .limit(6);

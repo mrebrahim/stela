@@ -13,7 +13,9 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   const db = createAdminClient();
   const patch: Record<string, unknown> = {};
   for (const k of [
-    'title_en','title_ar','description_en','description_ar','price','currency',
+    'title_en','title_ar','title_ru','title_zh',
+    'description_en','description_ar','description_ru','description_zh',
+    'locales','price','currency',
     'listing_type','status','property_type','bedrooms','bathrooms','area_sqm','floor',
     'view_kind','beach_distance','finishing','delivery_status','sale_kind','payment_kind',
     'down_payment','rental_period','furnished','max_guests','amenities','video_url',

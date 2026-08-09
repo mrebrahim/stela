@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { formatPrice } from '@/lib/format';
+import { localizedTitle } from '@/lib/localized';
+import type { Locale } from '@/i18n/config';
 import type { ListingWithProject } from '@/lib/types';
 
 const FALLBACKS = [
@@ -19,11 +21,11 @@ function fallbackFor(id: string) {
 }
 
 export async function ListingCard({ listing }: { listing: ListingWithProject }) {
-  const locale = await getLocale();
+  const locale = (await getLocale()) as Locale;
   const t = await getTranslations();
   const isRent = listing.listing_type === 'rent';
   const projectName = locale === 'ar' ? listing.project.name_ar : listing.project.name_en;
-  const title = (locale === 'ar' ? listing.title_ar : listing.title_en) ?? `${listing.property_type} — ${projectName}`;
+  const title = localizedTitle(listing, locale) ?? `${listing.property_type} — ${projectName}`;
   const cover = listing.photos?.[0]?.public_url ?? fallbackFor(listing.id);
 
   return (
@@ -57,7 +59,7 @@ export async function ListingCard({ listing }: { listing: ListingWithProject }) 
             </span>
           )}
         </div>
-        <div className="text-sm text-slate-700 truncate">{title}</div>
+        <div className="text-sm text-slate-700 truncate">{title as string}</div>
         <div className="text-xs text-slate-500 flex gap-3 pt-1">
           {listing.bedrooms != null && <span>🛏 {t('listing.bedrooms', { n: listing.bedrooms })}</span>}
           {listing.bathrooms != null && <span>🛁 {t('listing.bathrooms', { n: listing.bathrooms })}</span>}

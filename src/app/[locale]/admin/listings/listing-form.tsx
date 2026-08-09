@@ -6,6 +6,13 @@ import type { Locale } from '@/i18n/config';
 type ProjectOpt = { id: string; name: string };
 type Photo = { storage_path: string; public_url: string; is_primary?: boolean };
 
+const ALL_LOCALES: { code: Locale; label: string; dir: 'ltr' | 'rtl' }[] = [
+  { code: 'ar', label: 'العربية', dir: 'rtl' },
+  { code: 'en', label: 'English', dir: 'ltr' },
+  { code: 'ru', label: 'Русский', dir: 'ltr' },
+  { code: 'zh', label: '中文',    dir: 'ltr' }
+];
+
 export function ListingForm({ locale, projects }: { locale: Locale; projects: ProjectOpt[] }) {
   const router = useRouter();
   const [pending, start] = useTransition();
@@ -25,15 +32,24 @@ export function ListingForm({ locale, projects }: { locale: Locale; projects: Pr
   const [deliveryStatus, setDeliveryStatus] = useState('ready');
   const [rentalPeriod, setRentalPeriod] = useState('monthly');
   const [furnished, setFurnished] = useState(false);
-  const [titleEn, setTitleEn] = useState('');
-  const [titleAr, setTitleAr] = useState('');
-  const [descEn, setDescEn] = useState('');
-  const [descAr, setDescAr] = useState('');
   const [amenitiesText, setAmenitiesText] = useState('pool, beach, security, parking');
   const [videoUrl, setVideoUrl] = useState('');
   const [featured, setFeatured] = useState(false);
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [uploading, setUploading] = useState(false);
+
+  // Locales this listing will be published in
+  const [selectedLocales, setSelectedLocales] = useState<Locale[]>(['ar', 'en']);
+
+  // Per-locale title/description (keyed by locale code)
+  const [titles, setTitles] = useState<Record<Locale, string>>({ ar: '', en: '', ru: '', zh: '' });
+  const [descs, setDescs]   = useState<Record<Locale, string>>({ ar: '', en: '', ru: '', zh: '' });
+
+  function toggleLocale(code: Locale) {
+    setSelectedLocales((prev) =>
+      prev.includes(code) ? prev.filter((l) => l !== code) : [...prev, code]
+    );
+  }
 
   async function onFilesPicked(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? []);
@@ -67,6 +83,13 @@ export function ListingForm({ locale, projects }: { locale: Locale; projects: Pr
     setError(null);
     if (!projectId) { setError('Pick a project'); return; }
     if (!price) { setError('Price is required'); return; }
+    if (selectedLocales.length === 0) { setError('Pick at least one language'); return; }
+    for (const loc of selectedLocales) {
+      if (!titles[loc]?.trim()) {
+        setError(`Title is required for ${ALL_LOCALES.find(l => l.code === loc)?.label}`);
+        return;
+      }
+    }
     start(async () => {
       const body = {
         project_id: projectId,
@@ -84,10 +107,15 @@ export function ListingForm({ locale, projects }: { locale: Locale; projects: Pr
         delivery_status: listingType === 'sale' ? deliveryStatus : null,
         rental_period: listingType === 'rent' ? rentalPeriod : null,
         furnished: listingType === 'rent' ? furnished : null,
-        title_en: titleEn || null,
-        title_ar: titleAr || null,
-        description_en: descEn || null,
-        description_ar: descAr || null,
+        locales: selectedLocales,
+        title_ar: titles.ar || null,
+        title_en: titles.en || null,
+        title_ru: titles.ru || null,
+        title_zh: titles.zh || null,
+        description_ar: descs.ar || null,
+        description_en: descs.en || null,
+        description_ru: descs.ru || null,
+        description_zh: descs.zh || null,
         amenities: amenitiesText.split(',').map((s) => s.trim()).filter(Boolean),
         video_url: videoUrl || null,
         featured,
@@ -152,14 +180,67 @@ export function ListingForm({ locale, projects }: { locale: Locale; projects: Pr
           </Row>
         </Card>
 
-        <Card title="Titles & description">
-          <Row>
-            <Field label="Title (English)"><input value={titleEn} onChange={(e) => setTitleEn(e.target.value)} className="input" placeholder="2BR Chalet with sea view" /></Field>
-            <Field label="Title (Arabic)"><input value={titleAr} onChange={(e) => setTitleAr(e.target.value)} className="input" placeholder="شاليه غرفتين بإطلالة بحر" dir="rtl" /></Field>
-          </Row>
-          <Field label="Description (English)"><textarea rows={4} value={descEn} onChange={(e) => setDescEn(e.target.value)} className="input" /></Field>
-          <Field label="Description (Arabic)"><textarea rows={4} value={descAr} onChange={(e) => setDescAr(e.target.value)} className="input" dir="rtl" /></Field>
-          <Field label="Amenities (comma separated)"><input value={amenitiesText} onChange={(e) => setAmenitiesText(e.target.value)} className="input" /></Field>
+        {/* LANGUAGE PICKER */}
+        <Card title="Languages this listing will appear in">
+          <p className="text-sm text-slate-500 -mt-2">
+            The listing will only be visible on the public site for the languages you select.
+            For each selected language, provide a title and description below.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {ALL_LOCALES.map((l) => {
+              const on = selectedLocales.includes(l.code);
+              return (
+                <button
+                  key={l.code}
+                  type="button"
+                  onClick={() => toggleLocale(l.code)}
+                  className={
+                    'rounded-full border px-4 py-1.5 text-sm transition ' +
+                    (on ? 'bg-stella-700 text-white border-stella-700' : 'bg-white text-slate-700 hover:bg-slate-50')
+                  }
+                >
+                  {on ? '✓ ' : ''}{l.label}
+                </button>
+              );
+            })}
+          </div>
+        </Card>
+
+        {/* PER-LOCALE TITLE + DESCRIPTION */}
+        {selectedLocales.length > 0 && (
+          <Card title="Content per language">
+            <div className="space-y-6">
+              {ALL_LOCALES.filter((l) => selectedLocales.includes(l.code)).map((l) => (
+                <div key={l.code} className="border-s-4 border-stella-600 ps-4 space-y-3">
+                  <div className="text-sm font-semibold text-stella-700">{l.label}</div>
+                  <Field label={`Title (${l.label})`}>
+                    <input
+                      required
+                      value={titles[l.code]}
+                      onChange={(e) => setTitles((t) => ({ ...t, [l.code]: e.target.value }))}
+                      className="input"
+                      dir={l.dir}
+                    />
+                  </Field>
+                  <Field label={`Description (${l.label})`}>
+                    <textarea
+                      rows={4}
+                      value={descs[l.code]}
+                      onChange={(e) => setDescs((d) => ({ ...d, [l.code]: e.target.value }))}
+                      className="input"
+                      dir={l.dir}
+                    />
+                  </Field>
+                </div>
+              ))}
+            </div>
+          </Card>
+        )}
+
+        <Card title="Amenities">
+          <Field label="Amenities (comma separated)">
+            <input value={amenitiesText} onChange={(e) => setAmenitiesText(e.target.value)} className="input" />
+          </Field>
         </Card>
 
         <Card title="Commercials">
@@ -231,6 +312,10 @@ export function ListingForm({ locale, projects }: { locale: Locale; projects: Pr
             <input type="checkbox" checked={featured} onChange={(e) => setFeatured(e.target.checked)} />
             Featured on home
           </label>
+          <div className="text-xs text-slate-500 pt-2 border-t">
+            Will appear on the public site in:{' '}
+            <strong>{selectedLocales.map(l => ALL_LOCALES.find(x => x.code === l)?.label).join(', ') || 'none'}</strong>
+          </div>
           {error && <div className="rounded bg-red-50 border border-red-200 text-red-800 p-2 text-sm">{error}</div>}
           <button
             type="submit"
