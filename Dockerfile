@@ -1,17 +1,22 @@
 # syntax=docker/dockerfile:1.7
 
+ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+
 # ---- deps ----
 FROM node:22-alpine AS deps
 RUN apk add --no-cache libc6-compat
+ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 WORKDIR /app
-RUN corepack enable
 COPY package.json pnpm-lock.yaml ./
+RUN corepack enable && corepack prepare pnpm@10.28.0 --activate
 RUN pnpm install --frozen-lockfile
 
 # ---- build ----
 FROM node:22-alpine AS builder
+ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 WORKDIR /app
-RUN corepack enable
+COPY package.json pnpm-lock.yaml ./
+RUN corepack enable && corepack prepare pnpm@10.28.0 --activate
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
