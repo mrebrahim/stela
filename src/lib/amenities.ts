@@ -61,7 +61,19 @@ export const AMENITY_MAP: Record<string, AmenityMeta> = {
   sea_view:                    { icon: '🌊', category: 'unit',     label: { ar: 'يطل على البحر',     en: 'Sea view',                     ru: 'Вид на море',              zh: '海景' } },
   jacuzzi:                     { icon: '🛁', category: 'health',   label: { ar: 'جاكوزي',            en: 'Jacuzzi',                      ru: 'Джакузи',                  zh: '按摩浴缸' } },
   bbq_area:                    { icon: '🍖', category: 'family',   label: { ar: 'مكان للشواء',       en: 'BBQ area',                     ru: 'Зона барбекю',             zh: '烧烤区' } },
-  broadband_internet:          { icon: '📶', category: 'tech',     label: { ar: 'إنترنت عالي السرعة', en: 'Broadband internet',          ru: 'Широкополосный интернет',  zh: '宽带网络' }  }
+  broadband_internet:          { icon: '📶', category: 'tech',     label: { ar: 'إنترنت عالي السرعة', en: 'Broadband internet',          ru: 'Широкополосный интернет',  zh: '宽带网络' }  },
+  emergency_power:             { icon: '🔋', category: 'utility',  label: { ar: 'كهرباء احتياطية',   en: 'Emergency power',              ru: 'Резервное питание',        zh: '备用电源' } },
+  childcare_center:            { icon: '👶', category: 'family',   label: { ar: 'مركز رعاية أطفال',  en: 'Childcare center',             ru: 'Детский центр',            zh: '托儿中心' } },
+  intercom:                    { icon: '☎️', category: 'tech',     label: { ar: 'اتصال داخلي',       en: 'Intercom',                     ru: 'Домофон',                  zh: '对讲机' } },
+  landline:                    { icon: '📞', category: 'tech',     label: { ar: 'خط أرضي',           en: 'Landline',                     ru: 'Стационарный телефон',     zh: '固定电话' } },
+  meeting_room:                { icon: '👥', category: 'family',   label: { ar: 'غرفة اجتماعات',     en: 'Meeting room',                 ru: 'Комната для собраний',     zh: '会议室' } },
+  elevator:                    { icon: '🛗', category: 'unit',     label: { ar: 'مصعد',              en: 'Elevator',                     ru: 'Лифт',                     zh: '电梯' } },
+  cleaning_services:           { icon: '🧹', category: 'cleaning', label: { ar: 'خدمات تنظيف',       en: 'Cleaning services',            ru: 'Уборка',                   zh: '清洁服务' } },
+  laundry_service:             { icon: '🧼', category: 'cleaning', label: { ar: 'خدمة غسيل ملابس',   en: 'Laundry service',              ru: 'Услуги прачечной',         zh: '洗衣服务' } },
+  nearby_shopping:             { icon: '🛍️', category: 'compound', label: { ar: 'مراكز تسوق قريبة',  en: 'Nearby shopping',              ru: 'Магазины рядом',           zh: '附近购物中心' } },
+  panoramic_view:              { icon: '🖼️', category: 'unit',     label: { ar: 'إطلالة بانورامية',  en: 'Panoramic view',               ru: 'Панорамный вид',           zh: '全景视野' } },
+  golf_view:                   { icon: '⛳', category: 'unit',     label: { ar: 'إطلالة على الجولف', en: 'Golf view',                    ru: 'Вид на гольф',             zh: '高尔夫景观' } },
+  pool_view:                   { icon: '💦', category: 'unit',     label: { ar: 'إطلالة على المسبح', en: 'Pool view',                    ru: 'Вид на бассейн',           zh: '泳池景观' } }
 };
 
 export const CATEGORY_LABELS: Record<AmenityCategory, Record<Locale, string>> = {
