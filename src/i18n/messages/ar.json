@@ -34,7 +34,7 @@
     "furnished": "مفروش", "maxGuests": "الحد الأقصى للأفراد",
     "propertyTypes": { "chalet": "شاليه", "villa": "فيلا", "townhouse": "تاون هاوس", "twin_house": "توين هاوس", "penthouse": "بنتهاوس", "duplex": "دوبلكس", "apartment": "شقة", "studio": "استوديو" },
     "areas": { "north_coast": "الساحل الشمالي", "ain_sokhna": "العين السخنة" },
-    "rentalPeriods": { "daily": "يومي", "weekly": "أسبوعي", "monthly": "شهري", "seasonal": "موسمي", "annual": "سنوي" }
+    "rentalPeriods": { "daily": "باليوم", "weekly": "بالأسبوع", "monthly": "بالشهر", "seasonal": "بالموسم", "annual": "بالسنة" }
   },
   "listing": {
     "bedrooms": "{n} غرفة", "bathrooms": "{n} حمام", "area": "{n} م²", "floor": "الدور {n}",
