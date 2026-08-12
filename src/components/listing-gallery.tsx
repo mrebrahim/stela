@@ -128,16 +128,7 @@ export function ListingGallery({ photos, title }: { photos: Photo[]; title: stri
           </div>
 
           {/* CENTER — big photo */}
-          <div className="flex-1 flex items-center justify-center px-2 md:px-16 relative select-none">
-            {total > 1 && (
-              <button
-                type="button"
-                onClick={(e) => { e.stopPropagation(); prev(); }}
-                aria-label="Previous"
-                className="absolute start-2 md:start-6 top-1/2 -translate-y-1/2 z-10 w-11 h-11 md:w-14 md:h-14 rounded-full bg-white/15 hover:bg-white/30 text-white text-2xl md:text-3xl backdrop-blur flex items-center justify-center transition"
-              >‹</button>
-            )}
-
+          <div className="flex-1 flex items-center justify-center px-4 md:px-24 select-none">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={usable[index!].public_url!}
@@ -145,16 +136,25 @@ export function ListingGallery({ photos, title }: { photos: Photo[]; title: stri
               className="max-w-full max-h-full object-contain shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             />
+          </div>
 
-            {total > 1 && (
+          {/* NAVIGATION ARROWS — fixed to viewport, always centered vertically, never RTL-flipped */}
+          {total > 1 && (
+            <>
+              <button
+                type="button"
+                onClick={(e) => { e.stopPropagation(); prev(); }}
+                aria-label="Previous photo"
+                className="fixed left-3 md:left-6 top-1/2 -translate-y-1/2 z-[110] w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/20 hover:bg-white/40 active:bg-white/50 text-white text-3xl md:text-4xl leading-none backdrop-blur border border-white/40 shadow-2xl flex items-center justify-center transition"
+              >‹</button>
               <button
                 type="button"
                 onClick={(e) => { e.stopPropagation(); next(); }}
-                aria-label="Next"
-                className="absolute end-2 md:end-6 top-1/2 -translate-y-1/2 z-10 w-11 h-11 md:w-14 md:h-14 rounded-full bg-white/15 hover:bg-white/30 text-white text-2xl md:text-3xl backdrop-blur flex items-center justify-center transition"
+                aria-label="Next photo"
+                className="fixed right-3 md:right-6 top-1/2 -translate-y-1/2 z-[110] w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/20 hover:bg-white/40 active:bg-white/50 text-white text-3xl md:text-4xl leading-none backdrop-blur border border-white/40 shadow-2xl flex items-center justify-center transition"
               >›</button>
-            )}
-          </div>
+            </>
+          )}
 
           {/* THUMBNAIL STRIP */}
           {total > 1 && (
