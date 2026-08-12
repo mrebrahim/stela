@@ -9,6 +9,7 @@ import { youtubeIdFrom, youtubeEmbedUrl } from '@/lib/youtube';
 import { localizedTitle, localizedDescription } from '@/lib/localized';
 import { PropertyInfoTable } from '@/components/property-info-table';
 import { AmenitiesGrid } from '@/components/amenities-grid';
+import { ListingGallery } from '@/components/listing-gallery';
 import type { Locale } from '@/i18n/config';
 import type { ListingWithProject } from '@/lib/types';
 
@@ -62,9 +63,6 @@ export default async function ListingDetailPage({
         priceRange: `${listing.currency} ${listing.price}/${listing.rental_period}`
       };
 
-  const galleryImages = sortedPhotos.slice(0, 5);
-  const hasPhotos = galleryImages.length > 0;
-
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
@@ -77,39 +75,9 @@ export default async function ListingDetailPage({
           <Link href={`/${locale}/projects/${listing.project.slug}`} className="hover:text-slate-700">{projectName}</Link>
         </nav>
 
-        {/* GALLERY — hero photo + up to 4 thumbs, magazine style */}
-        <div className="relative rounded-2xl overflow-hidden bg-slate-100 mb-8">
-          {hasPhotos ? (
-            <div className="grid grid-cols-4 grid-rows-2 gap-2 h-[280px] sm:h-[380px] md:h-[480px]">
-              {/* main image */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={galleryImages[0].public_url ?? ''}
-                alt={title}
-                className="col-span-4 md:col-span-3 row-span-2 w-full h-full object-cover"
-              />
-              {/* small thumbs */}
-              {galleryImages.slice(1, 5).map((ph, i) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  key={i}
-                  src={ph.public_url ?? ''}
-                  alt=""
-                  loading="lazy"
-                  className="hidden md:block w-full h-full object-cover"
-                />
-              ))}
-              {sortedPhotos.length > 5 && (
-                <div className="hidden md:flex absolute bottom-3 end-3 items-center gap-1 bg-black/70 text-white text-xs px-2.5 py-1 rounded-full backdrop-blur">
-                  <span>📷</span> {sortedPhotos.length}
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="aspect-[16/9] flex items-center justify-center text-slate-400 text-sm">
-              {listing.property_type}
-            </div>
-          )}
+        {/* GALLERY — interactive Bayut-style grid + lightbox */}
+        <div className="mb-8">
+          <ListingGallery photos={sortedPhotos} title={title} />
         </div>
 
         {/* CONTENT + SIDEBAR */}
