@@ -13,37 +13,78 @@ const ALL_LOCALES: { code: Locale; label: string; dir: 'ltr' | 'rtl' }[] = [
   { code: 'zh', label: '中文',    dir: 'ltr' }
 ];
 
-export function ListingForm({ locale, projects }: { locale: Locale; projects: ProjectOpt[] }) {
+export type ListingFormInitial = {
+  id: string;
+  project_id: string;
+  listing_type: 'sale' | 'rent';
+  status: 'draft' | 'published' | 'pending' | 'verified' | 'rejected' | 'archived';
+  property_type: string;
+  bedrooms: number | null;
+  bathrooms: number | null;
+  area_sqm: number | null;
+  floor: number | null;
+  view_kind: string | null;
+  price: number | null;
+  finishing: string | null;
+  delivery_status: string | null;
+  rental_period: string | null;
+  furnished: boolean | null;
+  amenities: string[] | null;
+  video_url: string | null;
+  featured: boolean;
+  locales: string[];
+  title_ar: string | null; title_en: string | null; title_ru: string | null; title_zh: string | null;
+  description_ar: string | null; description_en: string | null; description_ru: string | null; description_zh: string | null;
+};
+
+export function ListingForm({
+  locale, projects, initial
+}: { locale: Locale; projects: ProjectOpt[]; initial?: ListingFormInitial }) {
   const router = useRouter();
   const [pending, start] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const isEdit = !!initial;
 
-  const [projectId, setProjectId] = useState(projects[0]?.id ?? '');
-  const [listingType, setListingType] = useState<'sale' | 'rent'>('sale');
-  const [status, setStatus] = useState<'draft' | 'published'>('published');
-  const [propertyType, setPropertyType] = useState('chalet');
-  const [bedrooms, setBedrooms] = useState('2');
-  const [bathrooms, setBathrooms] = useState('2');
-  const [areaSqm, setAreaSqm] = useState('110');
-  const [floor, setFloor] = useState('');
-  const [viewKind, setViewKind] = useState<string>('');
-  const [price, setPrice] = useState('');
-  const [finishing, setFinishing] = useState('fully');
-  const [deliveryStatus, setDeliveryStatus] = useState('ready');
-  const [rentalPeriod, setRentalPeriod] = useState('monthly');
-  const [furnished, setFurnished] = useState(false);
-  const [amenitiesText, setAmenitiesText] = useState('pool, beach, security, parking');
-  const [videoUrl, setVideoUrl] = useState('');
-  const [featured, setFeatured] = useState(false);
+  const [projectId, setProjectId] = useState(initial?.project_id ?? projects[0]?.id ?? '');
+  const [listingType, setListingType] = useState<'sale' | 'rent'>(initial?.listing_type ?? 'sale');
+  const [status, setStatus] = useState<'draft' | 'published'>(
+    (initial?.status === 'draft' ? 'draft' : 'published')
+  );
+  const [propertyType, setPropertyType] = useState(initial?.property_type ?? 'chalet');
+  const [bedrooms, setBedrooms] = useState(initial?.bedrooms?.toString() ?? '2');
+  const [bathrooms, setBathrooms] = useState(initial?.bathrooms?.toString() ?? '2');
+  const [areaSqm, setAreaSqm] = useState(initial?.area_sqm?.toString() ?? '110');
+  const [floor, setFloor] = useState(initial?.floor?.toString() ?? '');
+  const [viewKind, setViewKind] = useState<string>(initial?.view_kind ?? '');
+  const [price, setPrice] = useState(initial?.price?.toString() ?? '');
+  const [finishing, setFinishing] = useState(initial?.finishing ?? 'fully');
+  const [deliveryStatus, setDeliveryStatus] = useState(initial?.delivery_status ?? 'ready');
+  const [rentalPeriod, setRentalPeriod] = useState(initial?.rental_period ?? 'monthly');
+  const [furnished, setFurnished] = useState(initial?.furnished ?? false);
+  const [amenitiesText, setAmenitiesText] = useState(
+    initial ? (initial.amenities ?? []).join(', ') : 'pool, beach, security, parking'
+  );
+  const [videoUrl, setVideoUrl] = useState(initial?.video_url ?? '');
+  const [featured, setFeatured] = useState(initial?.featured ?? false);
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [uploading, setUploading] = useState(false);
 
-  // Locales this listing will be published in
-  const [selectedLocales, setSelectedLocales] = useState<Locale[]>(['ar', 'en']);
+  const [selectedLocales, setSelectedLocales] = useState<Locale[]>(
+    (initial?.locales?.filter((l): l is Locale => ['ar','en','ru','zh'].includes(l)) as Locale[]) ?? ['ar', 'en']
+  );
 
-  // Per-locale title/description (keyed by locale code)
-  const [titles, setTitles] = useState<Record<Locale, string>>({ ar: '', en: '', ru: '', zh: '' });
-  const [descs, setDescs]   = useState<Record<Locale, string>>({ ar: '', en: '', ru: '', zh: '' });
+  const [titles, setTitles] = useState<Record<Locale, string>>({
+    ar: initial?.title_ar ?? '',
+    en: initial?.title_en ?? '',
+    ru: initial?.title_ru ?? '',
+    zh: initial?.title_zh ?? ''
+  });
+  const [descs, setDescs] = useState<Record<Locale, string>>({
+    ar: initial?.description_ar ?? '',
+    en: initial?.description_en ?? '',
+    ru: initial?.description_ru ?? '',
+    zh: initial?.description_zh ?? ''
+  });
 
   function toggleLocale(code: Locale) {
     setSelectedLocales((prev) =>
@@ -91,7 +132,7 @@ export function ListingForm({ locale, projects }: { locale: Locale; projects: Pr
       }
     }
     start(async () => {
-      const body = {
+      const body: Record<string, unknown> = {
         project_id: projectId,
         listing_type: listingType,
         status,
@@ -119,16 +160,22 @@ export function ListingForm({ locale, projects }: { locale: Locale; projects: Pr
         amenities: amenitiesText.split(',').map((s) => s.trim()).filter(Boolean),
         video_url: videoUrl || null,
         featured,
-        verified: true,
-        photos: photos.map((p, i) => ({
+        verified: true
+      };
+
+      if (!isEdit) {
+        body.photos = photos.map((p, i) => ({
           storage_path: p.storage_path,
           public_url: p.public_url,
           sort_order: i,
           is_primary: i === 0
-        }))
-      };
-      const res = await fetch('/api/admin/listings', {
-        method: 'POST', headers: { 'content-type': 'application/json' },
+        }));
+      }
+
+      const url = isEdit ? `/api/admin/listings/${initial!.id}` : '/api/admin/listings';
+      const method = isEdit ? 'PATCH' : 'POST';
+      const res = await fetch(url, {
+        method, headers: { 'content-type': 'application/json' },
         body: JSON.stringify(body)
       });
       const json = await res.json();
@@ -277,21 +324,30 @@ export function ListingForm({ locale, projects }: { locale: Locale; projects: Pr
         </Card>
 
         <Card title="Media">
-          <Field label="Photos (JPG/PNG/WebP, up to 10 MB each)">
-            <input type="file" multiple accept="image/*" onChange={onFilesPicked} className="block text-sm" />
-            {uploading && <div className="text-xs text-slate-500 mt-2">Uploading…</div>}
-          </Field>
-          {photos.length > 0 && (
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 mt-3">
-              {photos.map((p, i) => (
-                <div key={p.storage_path} className="relative aspect-square rounded overflow-hidden border">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={p.public_url} alt="" className="w-full h-full object-cover" />
-                  {i === 0 && <span className="absolute top-1 left-1 bg-stella-700 text-white text-[10px] px-1.5 py-0.5 rounded">Cover</span>}
-                  <button type="button" onClick={() => removePhoto(i)} className="absolute top-1 right-1 bg-white/90 rounded-full w-6 h-6 text-xs">✕</button>
+          {!isEdit && (
+            <>
+              <Field label="Photos (JPG/PNG/WebP, up to 10 MB each)">
+                <input type="file" multiple accept="image/*" onChange={onFilesPicked} className="block text-sm" />
+                {uploading && <div className="text-xs text-slate-500 mt-2">Uploading…</div>}
+              </Field>
+              {photos.length > 0 && (
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 mt-3">
+                  {photos.map((p, i) => (
+                    <div key={p.storage_path} className="relative aspect-square rounded overflow-hidden border">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={p.public_url} alt="" className="w-full h-full object-cover" />
+                      {i === 0 && <span className="absolute top-1 left-1 bg-stella-700 text-white text-[10px] px-1.5 py-0.5 rounded">Cover</span>}
+                      <button type="button" onClick={() => removePhoto(i)} className="absolute top-1 right-1 bg-white/90 rounded-full w-6 h-6 text-xs">✕</button>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              )}
+            </>
+          )}
+          {isEdit && (
+            <p className="text-xs text-slate-500">
+              Photo management is in the panel below.
+            </p>
           )}
           <Field label="Video URL (YouTube)">
             <input value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} className="input" placeholder="https://youtu.be/... or https://youtube.com/watch?v=..." />
@@ -322,7 +378,7 @@ export function ListingForm({ locale, projects }: { locale: Locale; projects: Pr
             disabled={pending || uploading}
             className="w-full rounded-md bg-stella-700 hover:bg-stella-800 text-white py-2 font-semibold disabled:opacity-40"
           >
-            {pending ? 'Saving…' : 'Save listing'}
+            {pending ? 'Saving…' : (isEdit ? 'Save changes' : 'Save listing')}
           </button>
         </Card>
       </aside>
