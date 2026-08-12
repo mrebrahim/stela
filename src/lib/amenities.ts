@@ -73,7 +73,9 @@ export const AMENITY_MAP: Record<string, AmenityMeta> = {
   nearby_shopping:             { icon: '🛍️', category: 'compound', label: { ar: 'مراكز تسوق قريبة',  en: 'Nearby shopping',              ru: 'Магазины рядом',           zh: '附近购物中心' } },
   panoramic_view:              { icon: '🖼️', category: 'unit',     label: { ar: 'إطلالة بانورامية',  en: 'Panoramic view',               ru: 'Панорамный вид',           zh: '全景视野' } },
   golf_view:                   { icon: '⛳', category: 'unit',     label: { ar: 'إطلالة على الجولف', en: 'Golf view',                    ru: 'Вид на гольф',             zh: '高尔夫景观' } },
-  pool_view:                   { icon: '💦', category: 'unit',     label: { ar: 'إطلالة على المسبح', en: 'Pool view',                    ru: 'Вид на бассейн',           zh: '泳池景观' } }
+  pool_view:                   { icon: '💦', category: 'unit',     label: { ar: 'إطلالة على المسبح', en: 'Pool view',                    ru: 'Вид на бассейн',           zh: '泳池景观' } },
+  prayer_room:                 { icon: '🕌', category: 'family',   label: { ar: 'غرفة صلاة',         en: 'Prayer room',                  ru: 'Молитвенная комната',      zh: '祈祷室' } },
+  business_center:             { icon: '💼', category: 'family',   label: { ar: 'مركز أعمال',        en: 'Business center',              ru: 'Бизнес-центр',             zh: '商务中心' } }
 };
 
 export const CATEGORY_LABELS: Record<AmenityCategory, Record<Locale, string>> = {
