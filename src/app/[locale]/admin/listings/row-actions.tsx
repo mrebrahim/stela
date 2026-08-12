@@ -31,6 +31,7 @@ export function RowActions({
 
   return (
     <div className="flex gap-1.5">
+      <Link href={`/${locale}/admin/listings/${id}`} className="rounded border px-2 py-1 text-xs hover:bg-slate-50">Photos</Link>
       <Link href={`/${locale}/listings/${slug}`} target="_blank" className="rounded border px-2 py-1 text-xs hover:bg-slate-50">Preview</Link>
       {status === 'pending' && (
         <>
