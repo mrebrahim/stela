@@ -55,7 +55,13 @@ export const AMENITY_MAP: Record<string, AmenityMeta> = {
   clubhouse:                   { icon: '🏛️', category: 'compound', label: { ar: 'كلوب هاوس',         en: 'Clubhouse',                    ru: 'Клубный дом',              zh: '俱乐部会所' } },
   spa:                         { icon: '💆', category: 'compound', label: { ar: 'سبا',               en: 'Spa',                          ru: 'Спа',                      zh: '水疗中心' } },
   lagoon:                      { icon: '🌊', category: 'compound', label: { ar: 'بحيرة',             en: 'Lagoon',                       ru: 'Лагуна',                   zh: '泻湖' } },
-  security:                    { icon: '👮', category: 'security', label: { ar: 'الأمن',             en: 'Security',                     ru: 'Охрана',                   zh: '安保' } }
+  security:                    { icon: '👮', category: 'security', label: { ar: 'الأمن',             en: 'Security',                     ru: 'Охрана',                   zh: '安保' } },
+  cctv:                        { icon: '📹', category: 'security', label: { ar: 'كاميرات مراقبة',    en: 'CCTV',                         ru: 'Видеонаблюдение',          zh: '监控摄像头' } },
+  covered_parking:             { icon: '🚗', category: 'security', label: { ar: 'مواقف مغطاة',       en: 'Covered parking',              ru: 'Крытая парковка',          zh: '室内停车位' } },
+  sea_view:                    { icon: '🌊', category: 'unit',     label: { ar: 'يطل على البحر',     en: 'Sea view',                     ru: 'Вид на море',              zh: '海景' } },
+  jacuzzi:                     { icon: '🛁', category: 'health',   label: { ar: 'جاكوزي',            en: 'Jacuzzi',                      ru: 'Джакузи',                  zh: '按摩浴缸' } },
+  bbq_area:                    { icon: '🍖', category: 'family',   label: { ar: 'مكان للشواء',       en: 'BBQ area',                     ru: 'Зона барбекю',             zh: '烧烤区' } },
+  broadband_internet:          { icon: '📶', category: 'tech',     label: { ar: 'إنترنت عالي السرعة', en: 'Broadband internet',          ru: 'Широкополосный интернет',  zh: '宽带网络' }  }
 };
 
 export const CATEGORY_LABELS: Record<AmenityCategory, Record<Locale, string>> = {
