@@ -1,5 +1,5 @@
 {
-  "brand": { "name": "Stella Keys", "tagline": "Verified Stella-resort listings — buy, rent, or list your unit." },
+  "brand": { "name": "Stella Resale", "tagline": "Verified Stella-resort listings — buy, rent, or list your unit." },
   "nav": { "buy": "Buy", "rent": "Rent", "listYourUnit": "List your unit", "projects": "Projects", "about": "About", "contact": "Contact", "admin": "Admin" },
   "cta": { "buy": "Buy", "rent": "Rent", "listYourUnit": "List your unit", "contact": "Contact us", "call": "Call", "viewProject": "View project", "viewListing": "View listing", "reset": "Reset", "apply": "Apply", "next": "Next", "back": "Back", "submit": "Submit", "close": "Close" },
   "inquiry": { "title": "Send an inquiry", "name": "Full name", "phone": "Phone", "message": "Message (optional)", "success": "Thanks — we'll get back to you shortly." },

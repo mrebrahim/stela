@@ -6,7 +6,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
   setRequestLocale(locale);
   return (
     <div className="max-w-3xl mx-auto px-4 py-10 prose">
-      <h1>About Stella Keys</h1>
+      <h1>About Stella Resale</h1>
       <p>The trusted destination for Stella-resort inventory in Egypt.</p>
     </div>
   );

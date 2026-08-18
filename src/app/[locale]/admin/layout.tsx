@@ -33,7 +33,7 @@ export default async function AdminLayout({
   return (
     <div className="min-h-[calc(100vh-4rem)] grid grid-cols-1 lg:grid-cols-[240px_1fr]">
       <aside className="border-e bg-slate-900 text-slate-100 py-6 px-4 lg:min-h-full">
-        <div className="text-lg font-bold text-white mb-1">Stella Keys · Admin</div>
+        <div className="text-lg font-bold text-white mb-1">Stella Resale · Admin</div>
         <div className="text-xs text-slate-400 mb-6">{admin?.email ?? 'Not signed in'}</div>
         <nav className="space-y-1 text-sm">
           {nav.map((n) => (

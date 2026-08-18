@@ -1,5 +1,5 @@
 {
-  "brand": { "name": "Stella Keys", "tagline": "Stella 度假区经过核实的房源——购买、租赁或发布您的房产。" },
+  "brand": { "name": "Stella Resale", "tagline": "Stella 度假区经过核实的房源——购买、租赁或发布您的房产。" },
   "nav": { "buy": "购买", "rent": "租赁", "listYourUnit": "发布房产", "projects": "项目", "about": "关于我们", "contact": "联系我们", "admin": "管理" },
   "cta": { "buy": "购买", "rent": "租赁", "listYourUnit": "发布房产", "contact": "联系我们", "call": "致电", "viewProject": "查看项目", "viewListing": "查看房源", "reset": "重置", "apply": "应用", "next": "下一步", "back": "上一步", "submit": "提交", "close": "关闭" },
   "inquiry": { "title": "发送咨询", "name": "姓名", "phone": "电话号码", "message": "留言（可选）", "success": "感谢您的咨询,我们将尽快与您联系。" },

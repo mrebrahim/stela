@@ -41,7 +41,7 @@ export function SiteHeader() {
             'inline-flex w-8 h-8 rounded-lg items-center justify-center font-black text-sm shadow-card ' +
             (solid ? 'bg-stella-700 text-white' : 'bg-white text-stella-800')
           }>
-            SK
+            SR
           </span>
           <span className={'font-bold text-lg ' + (solid ? 'text-stella-800' : 'text-white')}>
             {t('brand.name')}
